@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Environment — never commit secrets
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+coverage/
+
+# Expo / React Native
+.expo/
+web-build/
+expo-env.d.ts
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+.metro-health-check*
+
+# Logs & OS
+*.log
+npm-debug.log*
+.DS_Store
+
+# Local tooling
+.claude/launch.json

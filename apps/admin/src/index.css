@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Cormorant Garamond', ui-serif, Georgia, serif;
+
+  --color-cream: #f8f4ee;
+  --color-warm: #fff8f0;
+  --color-espresso: #1f1a17;
+  --color-espresso-soft: #2a2420;
+  --color-ink: #2c2420;
+  --color-muted: #6f625a;
+  --color-line: #e8dfd4;
+  --color-caramel: #c68b59;
+  --color-caramel-dark: #a8703f;
+  --color-beige: #ddb892;
+  --color-gold: #b98d57;
+  --color-chart: #b06a2e;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'tnum' 0;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-caramel);
+    outline-offset: 2px;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
