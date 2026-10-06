@@ -26,6 +26,14 @@ const envSchema = z.object({
    * development without a Razorpay account; it is rejected in production.
    */
   PAYMENT_PROVIDER: z.enum(['razorpay', 'mock']).default('razorpay'),
+  /**
+   * Explicit opt-in to run the mock gateway with NODE_ENV=production — for a
+   * demo/staging server only. Never set this on a server real customers use.
+   */
+  ALLOW_MOCK_PAYMENTS: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   RAZORPAY_KEY_ID: optional,
   RAZORPAY_KEY_SECRET: optional,
   RAZORPAY_WEBHOOK_SECRET: optional,
@@ -48,14 +56,21 @@ if (!parsed.success) {
 const raw = parsed.data;
 
 if (raw.NODE_ENV === 'production') {
-  if (raw.PAYMENT_PROVIDER === 'mock') {
+  const mock = raw.PAYMENT_PROVIDER === 'mock';
+  if (mock && !raw.ALLOW_MOCK_PAYMENTS) {
     // eslint-disable-next-line no-console
-    console.error('\n❌ PAYMENT_PROVIDER=mock is for local development only. Use razorpay in production.\n');
+    console.error(
+      '\n❌ PAYMENT_PROVIDER=mock is for local development. Use razorpay in production,\n' +
+        '   or set ALLOW_MOCK_PAYMENTS=true for a demo/staging server (no real payments).\n',
+    );
     process.exit(1);
   }
+  if (mock) {
+    // eslint-disable-next-line no-console
+    console.warn('\n⚠️  DEMO MODE: mock payments enabled in production (ALLOW_MOCK_PAYMENTS=true). Do not use with real customers.\n');
+  }
   const required = [
-    'RAZORPAY_KEY_ID',
-    'RAZORPAY_KEY_SECRET',
+    ...(mock ? [] : (['RAZORPAY_KEY_ID', 'RAZORPAY_KEY_SECRET'] as const)),
     'CLOUDINARY_CLOUD_NAME',
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',

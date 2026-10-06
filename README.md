@@ -103,6 +103,7 @@ Secrets live **only** in `apps/backend/.env` (never in `EXPO_PUBLIC_*` / `VITE_*
 | `SUPABASE_DB_URL` | backend (optional) | only for `pnpm db:migrate` |
 | `JWT_SECRET` | backend **only** | ≥ 32 chars: `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
 | `PAYMENT_PROVIDER` | backend | `razorpay` (default) or `mock` for local development without a Razorpay account (blocked in production) |
+| `ALLOW_MOCK_PAYMENTS` | backend | `true` lets a **demo/staging** server (`NODE_ENV=production`) run `PAYMENT_PROVIDER=mock`; otherwise mock is refused in production |
 | `RAZORPAY_KEY_ID` | backend | sent to clients via `/payments/create-order` (public by design) |
 | `RAZORPAY_KEY_SECRET` | backend **only** | used for signature verification |
 | `RAZORPAY_WEBHOOK_SECRET` | backend **only** | optional, enables `/api/payments/webhook` |

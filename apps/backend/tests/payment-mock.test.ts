@@ -39,6 +39,25 @@ describe('mock payment provider', () => {
     expect(exit).toHaveBeenCalledWith(1);
   });
 
+  it('boots in production only with the explicit demo opt-in', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('PAYMENT_PROVIDER', 'mock');
+    vi.stubEnv('ALLOW_MOCK_PAYMENTS', 'true');
+    vi.stubEnv('RAZORPAY_KEY_ID', '');
+    vi.stubEnv('RAZORPAY_KEY_SECRET', '');
+    vi.stubEnv('CLOUDINARY_CLOUD_NAME', 'demo');
+    vi.stubEnv('CLOUDINARY_API_KEY', 'demo');
+    vi.stubEnv('CLOUDINARY_API_SECRET', 'demo');
+    const exit = vi.spyOn(process, 'exit').mockImplementation(((code?: number) => {
+      throw new Error(`exit ${code}`);
+    }) as never);
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const { env } = await import('../src/config/env.js');
+    expect(exit).not.toHaveBeenCalled();
+    expect(env.paymentsMock).toBe(true);
+    expect(env.isProduction).toBe(true);
+  });
+
   it('is not routable when the provider is razorpay, even for signed-in users', async () => {
     const { app, token } = await bootApp();
     const res = await request(app)
