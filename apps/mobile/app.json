@@ -14,7 +14,15 @@
       "supportsTablet": false,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "LSApplicationQueriesSchemes": ["tez", "phonepe", "paytmmp", "gpay", "upi", "credpay", "bhim"]
+        "LSApplicationQueriesSchemes": [
+          "tez",
+          "phonepe",
+          "paytmmp",
+          "gpay",
+          "upi",
+          "credpay",
+          "bhim"
+        ]
       }
     },
     "android": {
@@ -49,7 +57,11 @@
       "reactCompiler": true
     },
     "extra": {
-      "eas": {}
-    }
+      "eas": {
+        "projectId": "3c22396e-44fd-459d-99f1-2f986d810689"
+      },
+      "router": {}
+    },
+    "owner": "sandeshexpo"
   }
 }
