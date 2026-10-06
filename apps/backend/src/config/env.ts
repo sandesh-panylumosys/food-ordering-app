@@ -87,8 +87,9 @@ export const env = {
   ...raw,
   isProduction: raw.NODE_ENV === 'production',
   isTest: raw.NODE_ENV === 'test',
+  // Browsers send origins without a trailing slash; normalise so "https://x.com/" still matches.
   corsOrigins: raw.CORS_ORIGINS.split(',')
-    .map((o) => o.trim())
+    .map((o) => o.trim().replace(/\/+$/, ''))
     .filter(Boolean),
   razorpayEnabled: Boolean(raw.RAZORPAY_KEY_ID && raw.RAZORPAY_KEY_SECRET),
   paymentsMock: raw.PAYMENT_PROVIDER === 'mock',

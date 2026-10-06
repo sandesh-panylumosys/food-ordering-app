@@ -24,7 +24,8 @@ function devMachineApiUrl(): string | null {
 function resolveApiUrl(): string {
   // 1. Explicit configuration always wins (staging/production builds set this in eas.json).
   const fromEnv = process.env.EXPO_PUBLIC_API_URL?.trim();
-  if (fromEnv) return fromEnv.replace(/\/+$/, '');
+  // Tolerate duplicate slashes ("…com//api") and a trailing slash.
+  if (fromEnv) return fromEnv.replace(/([^:]\/)\/+/g, '$1').replace(/\/+$/, '');
   // 2. Development: the dev machine's address (works on simulators AND physical devices).
   const fromDevHost = devMachineApiUrl();
   if (fromDevHost) return fromDevHost;

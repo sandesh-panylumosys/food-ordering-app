@@ -1,6 +1,10 @@
 import type { ApiResponse, PaginationMeta } from '@food/shared-types';
 
-export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/+$/, '');
+// Tolerate common typos in VITE_API_URL: duplicate slashes ("…com//api") and a trailing slash.
+export const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
+  .trim()
+  .replace(/([^:]\/)\/+/g, '$1')
+  .replace(/\/+$/, '');
 export const TOKEN_KEY = 'eo_admin_token';
 
 /** A failed API call, normalised into something safe to show a person. */
